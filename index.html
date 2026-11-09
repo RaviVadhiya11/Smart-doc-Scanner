@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123746">
+  <meta name="description" content="Smart PDF Scanner - scan, organize and export documents locally.">
+  <title>Smart PDF Scanner</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="brand"><span class="brand-mark">▤</span><span>Smart PDF Scanner</span></div>
+    <button class="icon-btn" id="searchBtn" aria-label="Search">⌕</button>
+  </header>
+
+  <main class="app-shell">
+    <section class="welcome">
+      <div><p class="eyebrow">YOUR PAPERLESS WORKSPACE</p><h1>Scan. Save. Share.</h1><p class="muted">Your documents stay on this device.</p></div>
+      <div class="welcome-icon">▧</div>
+    </section>
+
+    <section class="quick-grid" aria-label="Quick actions">
+      <button class="quick-card primary" id="cameraBtn"><span class="quick-icon">📷</span><b>Scan document</b><small>Use camera</small></button>
+      <button class="quick-card" id="importBtn"><span class="quick-icon">＋</span><b>Import files</b><small>Photos or PDFs</small></button>
+      <button class="quick-card" id="imagePdfBtn"><span class="quick-icon">▣</span><b>Images to PDF</b><small>Create a PDF</small></button>
+      <button class="quick-card" id="ocrBtn"><span class="quick-icon">T</span><b>Image to text</b><small>OCR extraction</small></button>
+    </section>
+
+    <section class="tool-section">
+      <div class="section-heading"><div><p class="eyebrow">TOOLS</p><h2>PDF toolkit</h2></div><button class="text-btn" id="allToolsBtn">View all</button></div>
+      <div class="tool-grid">
+        <button class="tool-tile" data-tool="merge"><span>⇧</span>Merge PDFs</button>
+        <button class="tool-tile" data-tool="split"><span>✂</span>Split PDF</button>
+        <button class="tool-tile" data-tool="compress"><span>◉</span>Compress PDF</button>
+        <button class="tool-tile" data-tool="sign"><span>✍</span>Signature</button>
+        <button class="tool-tile" data-tool="qr"><span>▦</span>QR scanner</button>
+        <button class="tool-tile" data-tool="id"><span>▤</span>ID card scan</button>
+      </div>
+    </section>
+
+    <section class="documents-section">
+      <div class="section-heading"><div><p class="eyebrow">LIBRARY</p><h2>My documents <span class="count" id="docCount">0</span></h2></div>
+        <select id="sortSelect" aria-label="Sort documents"><option value="new">Newest</option><option value="old">Oldest</option><option value="name">Name</option></select>
+      </div>
+      <div class="filter-row">
+        <button class="filter active" data-filter="all">All docs</button>
+        <button class="filter" data-filter="favourite">★ Favourites</button>
+        <button class="filter" data-filter="pdf">PDFs</button>
+        <button class="filter" data-filter="image">Images</button>
+      </div>
+      <div id="documentList" class="document-list">
+        <div class="empty-state"><div class="empty-icon">▤</div><h3>No documents yet</h3><p>Scan a page or import a file to get started.</p><button class="btn primary-btn" id="emptyScanBtn">Start scanning</button></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-nav="home"><span>⌂</span>Home</button>
+    <button class="nav-item" data-nav="tools"><span>▦</span>Tools</button>
+    <button class="nav-item" data-nav="favourites"><span>★</span>Saved</button>
+    <button class="nav-item" data-nav="settings"><span>⚙</span>Settings</button>
+  </nav>
+
+  <input id="fileInput" type="file" accept="image/*,application/pdf" multiple hidden>
+  <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+
+  <dialog id="cameraDialog" class="modal">
+    <div class="modal-head"><h2>Scan document</h2><button class="icon-btn close-dialog">×</button></div>
+    <video id="cameraVideo" autoplay playsinline></video>
+    <canvas id="cameraCanvas" hidden></canvas>
+    <div class="camera-actions"><button class="btn secondary-btn" id="switchCameraBtn">Switch camera</button><button class="btn primary-btn" id="captureBtn">Capture page</button></div>
+    <p class="hint">Allow camera access. If live camera is unavailable, use the Import button.</p>
+  </dialog>
+
+  <dialog id="previewDialog" class="modal">
+    <div class="modal-head"><h2 id="previewTitle">Document preview</h2><button class="icon-btn close-dialog">×</button></div>
+    <div id="previewContent" class="preview-content"></div>
+    <div class="action-row" id="previewActions"></div>
+  </dialog>
+
+  <dialog id="toolDialog" class="modal">
+    <div class="modal-head"><h2 id="toolTitle">PDF tool</h2><button class="icon-btn close-dialog">×</button></div>
+    <div id="toolContent" class="tool-content"></div>
+  </dialog>
+
+  <dialog id="settingsDialog" class="modal">
+    <div class="modal-head"><h2>Settings</h2><button class="icon-btn close-dialog">×</button></div>
+    <div class="settings-list">
+      <label class="setting-line"><span><b>Dark appearance</b><small>Use a darker interface</small></span><input type="checkbox" id="darkToggle"></label>
+      <div class="setting-line"><span><b>Storage</b><small>Files are stored locally in this browser</small></span><b>On device</b></div>
+      <button class="setting-line danger" id="clearDataBtn"><span><b>Delete all local documents</b><small>This cannot be undone</small></span>›</button>
+      <p class="hint">This app does not upload your documents to a cloud server. Keep a separate backup of important files.</p>
+    </div>
+  </dialog>
+
+  <div id="toast" role="status" class="toast"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

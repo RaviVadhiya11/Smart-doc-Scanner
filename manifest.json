@@ -1,0 +1,10 @@
+{
+  "name": "Smart PDF Scanner",
+  "short_name": "Smart Scanner",
+  "description": "Scan and manage documents locally on your device.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f9fa",
+  "theme_color": "#123746",
+  "icons": []
+}
