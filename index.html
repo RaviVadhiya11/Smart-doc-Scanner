@@ -37,7 +37,9 @@
         <button class="tool-tile" data-tool="compress"><span>◉</span>Compress PDF</button>
         <button class="tool-tile" data-tool="sign"><span>✍</span>Signature</button>
         <button class="tool-tile" data-tool="qr"><span>▦</span>QR scanner</button>
-        <button class="tool-tile" data-tool="id"><span>▤</span>ID card scan</button>
+        <button class="tool-tile" data-tool="id"><span>▤</span>ID photo sheet</button>
+        <button class="tool-tile" data-tool="qrgen"><span>▦</span>Create QR code</button>
+        <button class="tool-tile" data-tool="pdfedit"><span>✎</span>PDF editor</button>
       </div>
     </section>
 
@@ -66,6 +68,7 @@
 
   <input id="fileInput" type="file" accept="image/*,application/pdf" multiple hidden>
   <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+  <input id="idPhotoInput" type="file" accept="image/*" hidden>
 
   <dialog id="cameraDialog" class="modal">
     <div class="modal-head"><h2>Scan document</h2><button class="icon-btn close-dialog">×</button></div>
@@ -101,6 +104,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

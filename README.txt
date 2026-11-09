@@ -8,11 +8,11 @@ WHAT IS INCLUDED
 - Images to PDF
 - Merge PDFs
 - Split PDFs into one-page PDFs
-- PDF object-stream re-save (not guaranteed to reduce every PDF)
+- PDF editor: rotate/delete pages and add a text watermark, saving an edited copy\n- PDF object-stream re-save (not guaranteed to reduce every PDF)
 - Signature pad
 - OCR (English)
-- QR code reading from an image
-- ID-card capture/import workflow
+- QR code reading from an image and QR code generation from text/URLs
+- ID photo maker: import a portrait and create 4x6 inch sheets in 35x45 mm, 2x2 inch or 25x35 mm sizes
 - Dark mode
 - PWA install and basic offline app shell
 
@@ -40,3 +40,14 @@ You can open index.html in a desktop browser, but camera/PWA features require HT
 
 PRIVACY
 The app itself does not send your documents to a custom server. External JavaScript libraries are fetched from CDNs. Your documents are saved in browser storage on your device.
+
+NEW FEATURES IN THIS VERSION
+- QR code generator: enter text or a URL, generate a QR code, and save it in your local library.
+- PDF editor: choose a PDF, rotate a selected page, delete a page, and optionally apply a text watermark to every page. The edited PDF is saved as a new copy; the original is preserved.
+- ID photo maker: import a photo, choose 35x45 mm passport, 2x2 inch visa, or 25x35 mm, choose the number of copies, and create a 4x6 inch print sheet.
+- QR scanner continues to read QR codes from selected images.
+
+NOTES
+- ID photo sheet is a layout helper, not an official photo-compliance checker. Check the destination authority's current photo rules and use a properly cropped, compliant portrait.
+- The PDF editor provides basic page operations and watermarking; it is not a full desktop-style text/object editor for changing existing PDF text.
+- For camera and install features, deploy on HTTPS (GitHub Pages works).
